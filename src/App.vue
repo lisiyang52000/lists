@@ -13,9 +13,10 @@
 <el-input v-model:value="value" v-on:keyup.native.13="keyup" placeholder="请输入内容"></el-input>
 <el-row :gutter="20" style="margin:10px 0;border:none">
   <el-col :span="6"><div class="grid-content bg-purple"><el-tag type="danger">{{num}}个任务未完成</el-tag></div></el-col>
-  <el-col :span="6" :offset="6"><div class="grid-content bg-purple"><a href="#all"><el-tag>所有任务</el-tag></a>
-<a href="#unfinish"><el-tag type="warning">未完成任务</el-tag></a>
-<a href="#finish"><el-tag type="success">完成任务</el-tag></a></div></el-col>
+ <el-col :span="6" :offset="6"><div class="grid-content bg-purple">
+ 	<router-link to="/"><el-tag>所有任务</el-tag></router-link>
+<router-link to="/unfinish"><el-tag type="warning">未完成任务</el-tag></router-link>
+<router-link to="/finish"><el-tag type="success">完成任务</el-tag></router-link></div></el-col>
 </el-row>
 
 	<el-container>
@@ -68,11 +69,18 @@ export default {
 				value:"",
 				editing:"",
 				beforeedit:"",
-				hash:"all"
+				hash:'unfinish',
+				path:'all',
+				data:''
+				
       }
     },
+ 
     watch:{
-
+    			$route(to,from){
+    				console.log(to.name)
+    				this.path=to.name
+    			},
 				list:{
 					deep:true,
 					handler:function(){
@@ -81,6 +89,7 @@ export default {
 			}
 			},
 			methods:{
+				
 				keyup(event){
 					console.log(event)
 					this.list.push({
@@ -118,6 +127,7 @@ export default {
 					}
 				}
 			},
+		
 			computed:{
 				num(){
 					return this.list.filter(function(item){
@@ -125,11 +135,9 @@ export default {
 					}).length
 				},
 				flagchecked(){
-					console.log(this.hash)
-					return flagcheck[this.hash] ? flagcheck[this.hash](this.list) :this.list
+					return flagcheck[this.path] ? flagcheck[this.path](this.list) :this.list
 				}
 			}
-  
 }
 </script>
 
@@ -162,3 +170,12 @@ export default {
 }
 	}
 </style>
+
+
+
+git init
+git add README.md
+git add .
+git commit -m "commit"
+git remote add origin https://github.com/lisiyang52000/lists.git
+git push -u origin master
